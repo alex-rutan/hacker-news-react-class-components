@@ -1,14 +1,32 @@
 import React from "react";
+import SearchForm from "./SearchForm";
 import Story from "./Story";
+import axios from "axios";
 
-class StoryList extends React.Component{
+class StoryList extends React.Component {
+  state = { stories: [] };
 
-  render(){
+  async componentDidMount() {
+    let res = await axios.get(`https://hn.algolia.com/api/v1/search?query=react`);
+    console.log(res);
+    this.setState({ stories: res.data.hits });
+  }
+
+  handleSearch() {
+    
+  }
+
+  render() {
     return (
-      <ul>
-        <li>TEST LI HERE</li>
-        <Story/>
-      </ul>
+      <div>
+        <SearchForm handleSearch={this.handleSearch}/>
+        <ul>
+          {this.state.stories.map(s => <Story
+            key={s.objectID}
+            title={s.title}
+            url={s.url} />)}
+        </ul>
+      </div>
     )
   }
 }
