@@ -4,16 +4,23 @@ import Story from "./Story";
 import axios from "axios";
 
 class StoryList extends React.Component {
-  state = { stories: [] };
+  state = { stories: [],
+    searchTerm: ""
+  };
 
   async componentDidMount() {
     let res = await axios.get(`https://hn.algolia.com/api/v1/search?query=react`);
-    console.log(res);
-    this.setState({ stories: res.data.hits });
+    this.setState({ ...this.state, stories: res.data.hits });
   }
 
-  handleSearch() {
-    
+  async handleSearch(searchTerm) {
+    this.setState({ ...this.state, searchTerm })
+  }
+
+  async componentDidUpdate(){
+    let res = await axios.get(`https://hn.algolia.com/api/v1/search?query=${this.searchTerm}`);
+    let stories = res.data.hits;
+    this.setState({ ...this.state, stories })
   }
 
   render() {

@@ -1,37 +1,33 @@
 import React from "react";
 
-class SearchForm extends React.Component{
+class SearchForm extends React.Component {
   constructor(props) {
     super(props);
     this.handleSearch = props.handleSearch;
-    this.formData = {};
+    this.state = { formData: "" };
   }
 
-  handleChange(evt) {
-    const { name, value } = evt.target;
-    this.setFormData((fData) => ({
-      ...fData,
-      [name]: value,
-    }));
+  handleChange = (evt) => {
+    const { value } = evt.target;
+    this.setState({ formData: value });
   }
 
-  handleSubmit(evt) {
+  handleSubmit = (evt) => {
     evt.preventDefault();
-    this.handleSearch()
-    
+    this.handleSearch(this.state.formData)
   }
 
 
-  render(){
-    return (
-    <form>
-      <input 
-        placeholder="Enter search term.."
-        onChange={handleChange}
-        >
 
-        </input>
-    </form>
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <input
+          placeholder="Enter search term.."
+          onChange={this.handleChange}
+        /> 
+        <button type="submit">search</button>
+      </form>
     )
   }
 }
