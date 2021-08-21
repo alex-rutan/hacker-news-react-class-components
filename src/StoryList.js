@@ -4,9 +4,11 @@ import Story from "./Story";
 import axios from "axios";
 
 class StoryList extends React.Component {
-  state = { stories: [],
-    searchTerm: ""
-  };
+  constructor(props) {
+    super(props);
+    this.state = { stories: [], searchTerm: "" };
+    this.handleSearch = this.handleSearch.bind(this);
+  }
 
   async componentDidMount() {
     let res = await axios.get(`https://hn.algolia.com/api/v1/search?query=react`);
@@ -14,16 +16,18 @@ class StoryList extends React.Component {
   }
 
   async handleSearch(searchTerm) {
-    this.setState({ ...this.state, searchTerm })
-  }
-
-  async componentDidUpdate(){
-    let res = await axios.get(`https://hn.algolia.com/api/v1/search?query=${this.searchTerm}`);
+    let res = await axios.get(`https://hn.algolia.com/api/v1/search?query=${searchTerm}`);
+    console.log(res)
     let stories = res.data.hits;
-    this.setState({ ...this.state, stories })
+    this.setState({ stories: stories }, () => {
+    this.forceUpdate();
+    console.log(this.state);
+    })
+    
   }
 
   render() {
+    console.log(this.state);
     return (
       <div>
         <SearchForm handleSearch={this.handleSearch}/>

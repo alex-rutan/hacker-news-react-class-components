@@ -9,7 +9,7 @@ class Story extends React.Component{
 
   render(){
     return (
-        <li><a href={this.url}>{this.title} </a></li>
+        <li><a href={this.url}> {this.title} </a></li>
     )
   }
 }
